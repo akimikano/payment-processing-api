@@ -1,8 +1,7 @@
-import { z, ZodError } from 'zod';
+const { z, ZodError } = require('zod');
+const { StatusCodes } = require('http-status-codes');
 
-import { StatusCodes } from 'http-status-codes';
-
-export function validateMiddleware(schema) {
+function validateMiddleware(schema) {
     return (req, res, next) => {
         try {
             schema.parse(req.body);
@@ -19,3 +18,5 @@ export function validateMiddleware(schema) {
         }
     };
 }
+
+module.exports = validateMiddleware;

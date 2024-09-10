@@ -2,7 +2,7 @@
   "name": "payment_processing_api",
   "version": "1.0.0",
   "main": "app.js",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,6 +13,8 @@
     "@hapi/joi": "^17.1.1",
     "express": "^4.19.2",
     "http-status-codes": "^2.3.0",
+    "sequelize": "^6.37.3",
+    "sqlite3": "^5.1.7",
     "zod": "^3.23.8"
   }
 }

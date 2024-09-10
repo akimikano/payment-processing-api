@@ -1,7 +1,9 @@
-import { z } from 'zod';
+const { z } = require('zod');
 
-export const TerminalCreateSchema = z.object({
+const TerminalCreateSchema = z.object({
     username: z.string(),
     email: z.string().email(),
     password: z.string().min(8),
 });
+
+module.exports = TerminalCreateSchema;

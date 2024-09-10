@@ -1,5 +1,5 @@
 
-export default function terminalController() {
+function terminalController() {
 
     const getAll = (req, res, next) => {
         return res.json([1, 2, 3]);
@@ -15,3 +15,5 @@ export default function terminalController() {
         create
     };
 }
+
+module.exports = terminalController;

@@ -5,3 +5,5 @@ class Terminal {
         this.created_at = created_at;
     }
 }
+
+module.exports = Terminal;

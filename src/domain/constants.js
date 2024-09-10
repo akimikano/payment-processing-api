@@ -1,0 +1,7 @@
+const BANK_ACCOUNT_STATUS = {
+    ACTIVE: "ACTIVE",
+    BLOCKED: "BLOCKED"
+}
+
+
+module.exports = {BANK_ACCOUNT_STATUS}

@@ -1,5 +1,7 @@
-import express from 'express';
-import routes from './src/infrastructure/webserver/routes/index.js';
+const express = require('express');
+const routes = require('./src/infrastructure/webserver/routes/index.js');
+const {TerminalModel} = require('./src/infrastructure/database/index.js');
+const terminalRepository = require("./src/infrastructure/database/repositories/terminalRepository");
 
 
 const app = express()
@@ -11,8 +13,16 @@ app.get('/', (req, res) => {
 
 routes(app, express);
 
-app.listen(port, () => {
+app.listen(port, async () => {
+    // const jane = await TerminalModel.create({password_hash: "salam"}).then(() => {
+    //     console.log("created")
+    // });
+    console.log(typeof TerminalModel.findAll)
+
+    const j = terminalRepository(TerminalModel);
+    const a = await j.findAll();
+    console.log(JSON.stringify(a, null, 2));
     console.log(`Example app listening on port ${port}`)
 })
 
-export default app;
+// export default app;
