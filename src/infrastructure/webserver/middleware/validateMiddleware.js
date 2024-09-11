@@ -1,10 +1,10 @@
 const { z, ZodError } = require('zod');
 const { StatusCodes } = require('http-status-codes');
+const {ServerError} = require("../exceptions");
 
 function validateMiddleware(schema) {
     return (req, res, next) => {
         try {
-            console.log(req.body)
             schema.parse(req.body);
             next();
         } catch (error) {
@@ -13,8 +13,8 @@ function validateMiddleware(schema) {
                     message: `${issue.path.join('.')} is ${issue.message}`,
                 }))
                 res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid data', details: errorMessages });
-            } else {
-                res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' });
+            } else if (error instanceof ServerError) {
+                throw error
             }
         }
     };

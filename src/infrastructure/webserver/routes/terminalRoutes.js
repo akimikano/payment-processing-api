@@ -1,20 +1,32 @@
 const terminalController = require("../../../controllers/terminalController.js");
 const validateMiddleware = require("../middleware/validateMiddleware.js");
-const TerminalCreateSchema = require("../schemas/terminalSchemas.js");
+const {TerminalAuthSchema, TerminalCreateSchema} = require("../schemas/terminalSchemas");
+const terminalRepositoryInterface = require("../../../application/repositories/terminalRepositoryInterface");
+const terminalRepository = require("../../database/repositories/terminalRepository");
+const {TerminalModel} = require("../../database");
 
 
 function terminalRouter(express) {
     const router = express.Router();
 
-    const controller = terminalController();
+    const controller = terminalController(
+        terminalRepositoryInterface,
+        terminalRepository(TerminalModel)
+    );
 
     router
-        .route("/")
-        .get(controller.getAll);
+        .route("/create")
+        .post(
+            validateMiddleware(TerminalCreateSchema),
+            controller.createTerminal
+        );
 
     router
-        .route("/")
-        .post(validateMiddleware(TerminalCreateSchema), controller.create)
+        .route("/jwt-create")
+        .post(
+            validateMiddleware(TerminalAuthSchema),
+            controller.createJwtTokens
+        );
 
     return router;
 }

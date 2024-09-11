@@ -1,4 +1,5 @@
 const { DataTypes } = require('sequelize');
+const {PAYMENT_STATUS} = require("../../../domain/constants");
 
 
 module.exports = (sequelize) =>
@@ -9,16 +10,41 @@ module.exports = (sequelize) =>
             primaryKey: true,
             type: DataTypes.INTEGER
         },
+        amount: {
+            allowNull: false,
+            type: DataTypes.INTEGER
+        },
+        pin_tries: {
+            allowNull: false,
+            type: DataTypes.INTEGER,
+            defaultValue: 0
+        },
         payment_status: {
             allowNull: false,
-            type: DataTypes.ENUM("CREATED", "CONFIRMED", "CANCELED"),
-            defaultValue: "CREATED"
+            type: DataTypes.ENUM(
+                PAYMENT_STATUS.CREATED,
+                PAYMENT_STATUS.CONFIRMED,
+                PAYMENT_STATUS.CANCELED
+            ),
+            defaultValue: PAYMENT_STATUS.CREATED
+        },
+        sender_account_id: {
+            allowNull: false,
+            type: DataTypes.INTEGER,
+            references: "bank_accounts",
+            referencesKey: "id"
         },
         recipient_account_id: {
             allowNull: false,
             type: DataTypes.INTEGER,
             references: "bank_accounts",
             referencesKey: "id"
+        },
+        confirmed_at: {
+            type: DataTypes.DATE,
+        },
+        canceled_at: {
+            type: DataTypes.DATE,
         },
         created_at: {
             type: DataTypes.DATE,

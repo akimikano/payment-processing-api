@@ -2,6 +2,7 @@ class Payment {
     constructor(
         id,
         amount,
+        pin_tries,
         payment_status,
         sender_account_id,
         recipient_account_id,
@@ -11,6 +12,7 @@ class Payment {
     ) {
         this.id = id;
         this.amount = amount;
+        this.pin_tries = pin_tries;
         this.payment_status = payment_status;
         this.sender_account_id = sender_account_id;
         this.recipient_account_id = recipient_account_id;

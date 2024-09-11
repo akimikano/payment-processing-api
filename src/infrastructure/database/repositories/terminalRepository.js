@@ -1,11 +1,16 @@
 
 
 function terminalRepository(terminalModel) {
-    const findAll = async () =>
-        await terminalModel.findAll();
+    const getOne =  async (params) =>
+        await terminalModel.findOne(params);
+
+    const create =  async (password_hash) =>
+        await terminalModel.create({password_hash: password_hash});
+
 
     return {
-        findAll
+        getOne,
+        create
     };
 }
 

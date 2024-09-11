@@ -1,11 +1,15 @@
 const { StatusCodes } = require('http-status-codes');
 const ServerError = require("../exceptions");
 
-function exceptionHandler(schema) {
+function exceptionHandler() {
     return (req, res, next) => {
+        console.log("-------")
+
         try {
+            console.log(1)
             next();
         } catch (error) {
+            console.log(2)
             if (error instanceof ServerError) {
                 res
                     .status(error.status_code)

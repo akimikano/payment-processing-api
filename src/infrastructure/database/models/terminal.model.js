@@ -16,6 +16,6 @@ module.exports = (sequelize) =>
         },
         created_at: {
             type: DataTypes.DATE,
-            defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+            defaultValue: DataTypes.NOW,
         }
     });

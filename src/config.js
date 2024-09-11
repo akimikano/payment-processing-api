@@ -7,5 +7,7 @@ module.exports = {
     redis: {
         uri: process.env.REDIS_URL || 'redis://localhost:6379'
     },
-    jwtSecret: process.env.JWT_SECRET || 'jkl!±@£!@ghj1237'
+    jwtSecret: process.env.JWT_SECRET || 'jkl!±@£!@ghj1237',
+    pinMaxTries: process.env.PIN_MAX_TRIES || 3,
+    passwordHashSalt: process.env.PASSWORD_HASH_SALT || 10,
 };

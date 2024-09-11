@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const BANK_ACCOUNT_STATUS = require('../../../domain/constants')
+const {BANK_ACCOUNT_STATUS} = require('../../../domain/constants')
 
 
 module.exports = (sequelize) =>
@@ -17,6 +17,26 @@ module.exports = (sequelize) =>
         last_name: {
             allowNull: false,
             type: DataTypes.STRING(255),
+        },
+        middle_name: {
+            allowNull: false,
+            type: DataTypes.STRING(255),
+        },
+        passport_num: {
+            allowNull: false,
+            type: DataTypes.TEXT,
+        },
+        balance: {
+            allowNull: false,
+            type: DataTypes.INTEGER
+        },
+        account_num: {
+            allowNull: false,
+            type: DataTypes.STRING(16),
+        },
+        currency: {
+            allowNull: false,
+            type: DataTypes.STRING(3),
         },
         account_status: {
             allowNull: false,
