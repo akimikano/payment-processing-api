@@ -4,6 +4,7 @@ const { StatusCodes } = require('http-status-codes');
 function validateMiddleware(schema) {
     return (req, res, next) => {
         try {
+            console.log(req.body)
             schema.parse(req.body);
             next();
         } catch (error) {

@@ -1,11 +1,13 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const routes = require('./src/infrastructure/webserver/routes/index.js');
-const {TerminalModel} = require('./src/infrastructure/database/index.js');
-const terminalRepository = require("./src/infrastructure/database/repositories/terminalRepository");
+const exceptionHandler = require("./src/infrastructure/webserver/middleware/exceptionHandler");
+const config = require("./src/config");
 
 
 const app = express()
-const port = 3000
+app.use(bodyParser.json());
+app.use(exceptionHandler);
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
@@ -13,16 +15,6 @@ app.get('/', (req, res) => {
 
 routes(app, express);
 
-app.listen(port, async () => {
-    // const jane = await TerminalModel.create({password_hash: "salam"}).then(() => {
-    //     console.log("created")
-    // });
-    console.log(typeof TerminalModel.findAll)
-
-    const j = terminalRepository(TerminalModel);
-    const a = await j.findAll();
-    console.log(JSON.stringify(a, null, 2));
-    console.log(`Example app listening on port ${port}`)
+app.listen(config.port, config.host, async () => {
+    console.log(`Listening on port http://${config.host}:${config.port}`)
 })
-
-// export default app;
