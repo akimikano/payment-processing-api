@@ -72,7 +72,7 @@ src                                 → Application sources
 
 ## Deployment
 
-The system is deployed on Ubuntu server using Docker. API is accessible with this [link]("https://youtube.com").
+The system is deployed on Ubuntu server using Docker. API is accessible with this [link]("http://simplify.kg:8080").
 Run the following command to run the system locally:
 ```sh
 docker-compose up -d
@@ -175,4 +175,20 @@ HTTP/1.1 200 OK
     "sender_account_id": int,
     "recipient_account_id": int
 }
+```
+
+#### Bank accounts, terminals for testing
+
+```
+Bank accounts: 
+id: 1, pin: "1234"
+id: 2, pin: "1111"
+id: 3, pin: "2222"
+
+Terminals:
+id: 1, password: testterminal1
+id: 2, password: testterminal2
+id: 3, password: testterminal3
+
+Some of bank accounts do not have enough money so that you can see errors
 ```
