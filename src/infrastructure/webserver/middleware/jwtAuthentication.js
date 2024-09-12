@@ -1,13 +1,19 @@
 const jwt = require('jsonwebtoken');
 const config = require("../../../config");
+const {UserException} = require("../exceptions");
+const {StatusCodes} = require("http-status-codes");
 
 function jwtAuthentication() {
     return (req, res, next) => {
         const token = req.header('Authorization');
-        if (!token) return res.status(401).json({ error: 'Authentication failed' });
+        if (!token) {
+            next(new UserException("Authentication failed.", StatusCodes.UNAUTHORIZED))
+        };
 
         jwt.verify(token, config.jwtSecret, (err, user) => {
-            if (err) return res.status(403).json({ error: 'Token is not valid' });
+            if (err) {
+                next(new UserException("Token not valid.", StatusCodes.FORBIDDEN))
+            }
             req.user = user;
             next();
         });

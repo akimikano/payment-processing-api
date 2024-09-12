@@ -32,9 +32,10 @@ async function initiatePaymentUseCase(
     const payment = new Payment(
         null,
         amount,
+        0,
         "CREATED",
         sender_account.id,
-        recipient_account.id
+        recipient_account.id,
     )
 
     return await paymentRepository.create(payment)

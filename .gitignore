@@ -16,3 +16,4 @@ error.log
 .fleet
 .pytest_cache
 node_modules
+postgres

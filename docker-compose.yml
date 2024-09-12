@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+
+  payment_processing_api:
+    build: .
+    container_name: payment_processing_api
+    env_file:
+      - .env
+    ports:
+      - "8080:8000"
+    restart: always
+
+  payment_processing_db:
+    image: postgres:14
+    container_name: payment_processing_db
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"

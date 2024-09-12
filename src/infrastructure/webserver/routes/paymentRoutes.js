@@ -6,6 +6,7 @@ const paymentRepositoryInterface = require("../../../application/repositories/pa
 const paymentRepository = require("../../database/repositories/paymentRepository");
 const {PaymentModel} = require("../../database");
 const jwtAuthentication = require("../middleware/jwtAuthentication");
+const {findException} = require("../middleware/exceptionHandler");
 
 
 function paymentRouter(express) {
@@ -21,7 +22,7 @@ function paymentRouter(express) {
         .post(
             jwtAuthentication(),
             validateMiddleware(PaymentInitiateSchema),
-            controller.initiatePayment
+            findException(controller.initiatePayment)
         )
 
     router
@@ -29,7 +30,7 @@ function paymentRouter(express) {
         .post(
             jwtAuthentication(),
             validateMiddleware(PaymentPinSchema),
-            controller.confirmPayment
+            findException(controller.confirmPayment)
         )
 
     return router;

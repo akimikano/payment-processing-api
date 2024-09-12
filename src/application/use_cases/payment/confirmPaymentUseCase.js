@@ -2,6 +2,7 @@ const {BANK_ACCOUNT_STATUS, CARD_STATUS, PAYMENT_STATUS} = require("../../../dom
 const Payment = require("../../../domain/entities/payment");
 const {ServerError, UserException, NotFound} = require("../../../infrastructure/webserver/exceptions");
 const config = require("../../../config");
+const {matchPIN} = require("../../../domain/services/cardServices");
 
 async function confirmPaymentUseCase(
     payment_id,
@@ -11,7 +12,7 @@ async function confirmPaymentUseCase(
     cardRepository
 ) {
     const db_payment = await paymentRepository.getOne(
-        {where: {id: payment_id, payment_status: "CREATED"}}
+        {where: {id: payment_id, payment_status: PAYMENT_STATUS.CREATED}}
     );
 
     if (db_payment === null) {
@@ -21,39 +22,37 @@ async function confirmPaymentUseCase(
     const sender_account = await accountRepository.getOne(
         {where: {id: db_payment.sender_account_id, account_status: BANK_ACCOUNT_STATUS.ACTIVE}}
     )
+
     const sender_card = await cardRepository.getOne(
         {where: {bank_account_id: sender_account.id, card_status: CARD_STATUS.ACTIVE}}
     )
-
-    if (sender_card.pin_hash !== card_pin) {
-        throw new UserException("Incorrect PIN code.")
-    }
 
     const recipient_account = await accountRepository.getOne(
         {where: {id: db_payment.recipient_account_id, account_status: BANK_ACCOUNT_STATUS.ACTIVE}}
     )
 
-    if (db_payment.pin_tries >= config.pinMaxTries) {
-        db_payment.payment_status = PAYMENT_STATUS.CANCELED
-        return false;
-    }
-
     db_payment.pin_tries += 1
 
-    if (card.pin_hash !== pin) {
+    if (!await matchPIN(card_pin, sender_card.pin_hash)) {
+
+        if (db_payment.pin_tries >= config.pinMaxTries) {
+            db_payment.payment_status = PAYMENT_STATUS.CANCELED
+            await db_payment.save()
+            throw new UserException("Too much tries.")
+        }
+
+        await db_payment.save()
         throw new UserException("Incorrect PIN code.")
     }
 
-    sender_account.balance -= db_payment.amount
-    recipient_account.balance += db_payment.amount
-    db_payment.payment_status = PAYMENT_STATUS.CONFIRMED
+    await accountRepository.updateBalance(sender_account.id, sender_account.balance -= db_payment.amount)
+    await accountRepository.updateBalance(recipient_account.id, recipient_account.balance += db_payment.amount)
 
-    await sender_account.save()
-    await recipient_account.save()
+    db_payment.payment_status = PAYMENT_STATUS.CONFIRMED
     await db_payment.save()
 
     return db_payment;
 }
 
 
-module.exports = initiatePaymentUseCase;
+module.exports = confirmPaymentUseCase;

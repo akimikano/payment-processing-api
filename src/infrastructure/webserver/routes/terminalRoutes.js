@@ -4,6 +4,7 @@ const {TerminalAuthSchema, TerminalCreateSchema} = require("../schemas/terminalS
 const terminalRepositoryInterface = require("../../../application/repositories/terminalRepositoryInterface");
 const terminalRepository = require("../../database/repositories/terminalRepository");
 const {TerminalModel} = require("../../database");
+const {findException} = require("../middleware/exceptionHandler");
 
 
 function terminalRouter(express) {
@@ -18,14 +19,14 @@ function terminalRouter(express) {
         .route("/create")
         .post(
             validateMiddleware(TerminalCreateSchema),
-            controller.createTerminal
+            findException(controller.createTerminal)
         );
 
     router
         .route("/jwt-create")
         .post(
             validateMiddleware(TerminalAuthSchema),
-            controller.createJwtTokens
+            findException(controller.createJwtTokens)
         );
 
     return router;

@@ -1,7 +1,7 @@
 const {UserException} = require("../../infrastructure/webserver/exceptions");
 
 class Card {
-    constructor(
+    constructor({
         id,
         bank_account_id,
         pin_hash,
@@ -12,7 +12,7 @@ class Card {
         activated_at,
         blocked_at,
         created_at
-    ) {
+    }) {
         this.id = id;
         this.bank_account_id = bank_account_id;
         this.pin_hash = pin_hash;
@@ -23,12 +23,6 @@ class Card {
         this.activated_at = activated_at;
         this.blocked_at = blocked_at;
         this.created_at = created_at;
-    }
-
-    check_pin(pin) {
-        if (pin !== this.pin_hash) {
-            throw new Error("Incorrect PIN code.");
-        }
     }
 }
 
