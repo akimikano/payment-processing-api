@@ -72,7 +72,7 @@ src                                 → Application sources
 
 ## Deployment
 
-The system is deployed on Ubuntu server using Docker. API is accessible with this [link]("http://simplify.kg:8080").
+The system is deployed on Ubuntu server using Docker. API is accessible with this [link](http://simplify.kg:8080).
 Run the following command to run the system locally:
 ```sh
 docker-compose up -d
