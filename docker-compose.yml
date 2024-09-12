@@ -17,6 +17,6 @@ services:
     env_file:
       - .env
     volumes:
-      - ./postgres:/var/lib/postgresql/data
+      - /data/akim_postgres:/var/lib/postgresql/data
     ports:
       - "5433:5432"
